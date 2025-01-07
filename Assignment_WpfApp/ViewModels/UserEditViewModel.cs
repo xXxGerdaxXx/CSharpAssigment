@@ -3,14 +3,16 @@ using Business_Library.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 
 namespace Assignment_WpfApp.ViewModels;
 
-public partial class UserEditViewModel(IServiceProvider serviceProvider, IUserService userService) : ObservableObject
-
+public partial class UserEditViewModel : ObservableObject
 {
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
-    private readonly IUserService _userService = userService;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IUserService _userService;
+    private readonly IValidationService _validationService;
+
 
     [ObservableProperty]
     private UserBase _user = new UserBase
@@ -24,19 +26,49 @@ public partial class UserEditViewModel(IServiceProvider serviceProvider, IUserSe
         City = string.Empty
     };
 
-    // RelayCommand to save the user
+    [ObservableProperty]
+    private Dictionary<string, string> _fieldErrors = new();
+
+    public UserEditViewModel(IServiceProvider serviceProvider, IUserService userService, IValidationService validationService)
+    {
+        _serviceProvider = serviceProvider;
+        _userService = userService;
+        _validationService = validationService;
+        FieldErrors = new Dictionary<string, string>();
+    }
+
     [RelayCommand]
     private void Save()
     {
+        
+        var errors = _validationService.ValidateUser(User);
+
+        FieldErrors.Clear();
+
+        if (errors.Any())
+        {
+            foreach (var error in errors)
+            {
+                FieldErrors[error.Key] = error.Value;
+            }
+
+            OnPropertyChanged(nameof(FieldErrors));
+            return;
+        }
+
+
+        FieldErrors.Clear();
+        OnPropertyChanged(nameof(FieldErrors));
+
         var result = _userService.UpdateUser(User);
         if (result)
         {
+
             var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
             mainViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
         }
     }
 
-    // RelayCommand to cancel and navigate back to the UserListViewModel
     [RelayCommand]
     private void Cancel()
     {
@@ -44,4 +76,3 @@ public partial class UserEditViewModel(IServiceProvider serviceProvider, IUserSe
         mainViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
     }
 }
-

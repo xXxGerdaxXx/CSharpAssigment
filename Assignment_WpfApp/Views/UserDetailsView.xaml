@@ -8,10 +8,10 @@
              xmlns:models="clr-namespace:Business_Library.Models;assembly=Business_Library"
              d:DataContext="{d:DesignInstance Type=viewmodels:UserDetailsViewModel}"
              mc:Ignorable="d" 
-             Background="White"
-             d:DesignHeight="650" d:DesignWidth="400">
-    <Grid Margin="20">
-        <Border Padding="20" Background="White" CornerRadius="10" BorderBrush="#DDD" BorderThickness="1">
+             Background="Transparent"
+             d:DesignHeight="700" d:DesignWidth="400">
+
+    <Border Padding="20" Margin="20" Background="White" CornerRadius="25" BorderBrush="#DDD" BorderThickness="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -23,13 +23,14 @@
                 <TextBlock Grid.Row="0"
                            Text="User Details"
                            FontSize="24"
+                           HorizontalAlignment="Center"
                            FontWeight="Bold"
-                           Margin="0,0,0,20" />
+                           Margin="0,0,0,50" />
 
                 <!-- User Details Section -->
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
@@ -56,28 +57,13 @@
 
                 <!-- Action Buttons Section -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
-                    <!-- Edit Button -->
-                    <Button Content="Edit"
-                            Command="{Binding GoToEditViewCommand}"
-                            Width="100"
-                            Background="#4CAF50"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            Margin="0,0,10,0"
-                            Padding="5" />
-
-                    <!-- Cancel Button -->
-                    <Button Content="Cancel"
-                            Command="{Binding CancelCommand}"
-                            Width="100"
-                            Background="#F44336"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            Padding="5" />
+                    
+                <!-- Edit Button -->
+                <Button Style="{StaticResource EditButton}" Command="{Binding GoToEditViewCommand}" />
+                <!-- Cancel btn -->
+                <Button Style="{StaticResource CancelButton}" Command="{Binding CancelCommand}" Margin="10,0,0,0" />
                 </StackPanel>
             </Grid>
-        </Border>
-    </Grid>
+     
+    </Border>
 </UserControl>

@@ -7,15 +7,12 @@
              xmlns:viewmodels="clr-namespace:Assignment_WpfApp.ViewModels"
              xmlns:models="clr-namespace:Business_Library.Models;assembly=Business_Library"
              d:DataContext="{d:DesignInstance Type=viewmodels:UserListViewModel}"
-             Background="White"
+             Background="Transparent"
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="400">
+             d:DesignHeight="700" d:DesignWidth="400">
     <Border Padding="20"
             Margin="20"
-            Background="White"
-            CornerRadius="10"
-            BorderBrush="#DDD"
-            BorderThickness="1">
+            Background="White">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -40,9 +37,9 @@
                         Command="{Binding GoToAddViewCommand}"
                         Content="&#xE710;"
                         FontFamily="Segoe MDL2 Assets"
-                        FontSize="24"
-                        Width="50"
-                        Height="50"
+                        FontSize="20"
+                        Width="40"
+                        Height="40"
                         Background="#4CAF50"
                         Foreground="White"
                         Padding="5"
@@ -106,87 +103,14 @@
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Right">
 
-                                <!-- Details Button -->
                                 <Button Command="{Binding DataContext.GoToDetailsViewCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Content="&#xE70F;"
-                                        FontFamily="Segoe MDL2 Assets"
-                                        FontSize="18"
-                                        Width="30"
-                                        Height="30"
-                                        Background="#2196F3"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        Cursor="Hand"
-                                        ToolTip="View Details">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Background" Value="#2196F3" />
-                                            <Setter Property="Foreground" Value="White" />
-                                            <Setter Property="Opacity" Value="1" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="Button">
-                                                        <Grid>
-                                                            <Ellipse Fill="{TemplateBinding Background}" />
-                                                            <ContentPresenter HorizontalAlignment="Center"
-                                                                              VerticalAlignment="Center" />
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#1976D2" />
-                                                </Trigger>
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter Property="Opacity" Value="0.8" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource DetailsButton}" />
 
-                                <!-- Delete Button -->
                                 <Button Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}"
-                                        Content="&#xE74D;"
-                                        FontFamily="Segoe MDL2 Assets"
-                                        FontSize="18"
-                                        Width="30"
-                                        Height="30"
-                                        Background="Red"
-                                        Foreground="White"
-                                        BorderThickness="0"
-                                        Cursor="Hand"
-                                        ToolTip="Delete User">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Setter Property="Background" Value="Red" />
-                                            <Setter Property="Foreground" Value="White" />
-                                            <Setter Property="Opacity" Value="1" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="Button">
-                                                        <Grid>
-                                                            <Ellipse Fill="{TemplateBinding Background}" />
-                                                            <ContentPresenter HorizontalAlignment="Center"
-                                                                              VerticalAlignment="Center" />
-                                                        </Grid>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#D32F2F" />
-                                                </Trigger>
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter Property="Opacity" Value="0.8" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
+                                CommandParameter="{Binding}"
+                                Style="{StaticResource DeleteButton}" />
+
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

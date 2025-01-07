@@ -12,4 +12,6 @@ public partial class UserAddView : UserControl
     {
         InitializeComponent();
     }
+
+
 }

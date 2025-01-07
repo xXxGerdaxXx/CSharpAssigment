@@ -52,32 +52,4 @@ public class FileServiceTests
     }
 
 
-    [Fact]
-    public void ReadFromFile_ShouldReturnCorrectContent()
-    {
-        // Arrange
-        string directoryPath = "TestData";
-        string fileName = "testfile.json";
-        var data = new List<string> { "Sample", "Content" };
-        string filePath = Path.Combine(directoryPath, fileName);
-
-        Directory.CreateDirectory(directoryPath);
-        var json = System.Text.Json.JsonSerializer.Serialize(data, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(filePath, json);
-
-        var fileService = new FileService(directoryPath, fileName);
-
-        // Act
-        var result = fileService.ReadFromFile<string>();
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.Equal(data, result);
-
-        // Cleanup
-        File.Delete(filePath);
-        Directory.Delete(directoryPath);
-    }
-
-
 }

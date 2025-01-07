@@ -4,21 +4,33 @@ using Business_Library.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace Assignment_WpfApp.ViewModels;
 
-public partial class UserAddViewModel(IUserService userService, IServiceProvider serviceProvider) : ObservableObject
+public partial class UserAddViewModel : ObservableObject
 {
-    // Dependencies injected via constructor
-    private readonly IUserService _userService = userService;
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
+    private readonly IUserService _userService;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IValidationService _validationService;
 
-    // Property bound to the user input
+    public UserAddViewModel(IUserService userService, IServiceProvider serviceProvider, IValidationService validationService)
+    {
+        _userService = userService;
+        _serviceProvider = serviceProvider;
+        _validationService = validationService;
+        FieldErrors = new Dictionary<string, string>();
+    }
+    
     [ObservableProperty]
-    private UserBase user = new();
+    private UserBase _user = new UserBase();
 
-    // Command to cancel and navigate back to the user list
+    
+    [ObservableProperty]
+    private Dictionary<string, string> _fieldErrors;
+
+    
     [RelayCommand]
     private void Cancel()
     {
@@ -26,32 +38,36 @@ public partial class UserAddViewModel(IUserService userService, IServiceProvider
         mainViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
     }
 
-    // Command to save the user
-[RelayCommand]
-private void Save()
-{
-    if (string.IsNullOrWhiteSpace(User.Name) || string.IsNullOrWhiteSpace(User.Email))
+    [RelayCommand]
+    private void Save()
     {
-        MessageBox.Show("Please fill out all required fields.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-        return;
+        FieldErrors.Clear();
+
+        var errors = _validationService.ValidateUser(User);
+
+        if (errors.Count > 0)
+        {
+            foreach (var error in errors)
+            {
+                FieldErrors[error.Key] = error.Value;
+            }
+
+            OnPropertyChanged(nameof(FieldErrors)); 
+            return;
+        }
+
+        var result = _userService.AddUser(User);
+        if (result)
+        {
+            var userListViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
+            userListViewModel.RefreshUsers();
+
+            var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
+            mainViewModel.CurrentViewModel = userListViewModel;
+        }
+        else
+        {
+            MessageBox.Show("Failed to save the user. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
-
-    var result = _userService.AddUser(User); // Save the user
-    if (result)
-    {
-        // Refresh UserListViewModel
-        var userListViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
-        userListViewModel.RefreshUsers();
-
-        // Navigate back to UserListView
-        var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
-        mainViewModel.CurrentViewModel = userListViewModel;
-    }
-    else
-    {
-        MessageBox.Show("Failed to save the user. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-    }
-}
-
-
 }

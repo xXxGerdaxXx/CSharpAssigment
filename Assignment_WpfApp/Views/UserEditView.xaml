@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:Assignment_WpfApp.Views"
              xmlns:viewmodels="clr-namespace:Assignment_WpfApp.ViewModels"
              xmlns:models="clr-namespace:Business_Library.Models;assembly=Business_Library"
-             
-             Background="White"
+             d:DataContext="{d:DesignInstance Type=viewmodels:UserEditViewModel}"
+             Background="Transparent"
              mc:Ignorable="d" 
-             d:DesignHeight="650" d:DesignWidth="400">
+             d:DesignHeight="700" d:DesignWidth="400">
     <Grid Margin="20">
-        <Border Padding="20" Background="White" CornerRadius="10" BorderBrush="#DDD" BorderThickness="1">
+        <Border Padding="20" Background="White" CornerRadius="10" >
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -28,17 +28,23 @@
 
                 <!-- Input Fields Section -->
                 <StackPanel Grid.Row="1" Margin="0,0,0,20">
-                    <TextBlock Text="First Name" FontWeight="Bold" />
-                    <TextBox Text="{Binding User.Name}" Margin="0,0,0,10" Padding="5" />
+                    <TextBlock Text="First Name:" FontWeight="Bold" />
+                    <TextBox Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                    <TextBlock Text="{Binding FieldErrors[Name]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
-                    <TextBlock Text="Surname" FontWeight="Bold" />
-                    <TextBox Text="{Binding User.Surname}" Margin="0,0,0,10" Padding="5" />
+                    <TextBlock Text="Surname:" FontWeight="Bold" />
+                    <TextBox Text="{Binding User.Surname, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                    <TextBlock Text="{Binding FieldErrors[Surname]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
-                    <TextBlock Text="Email" FontWeight="Bold" />
-                    <TextBox Text="{Binding User.Email}" Margin="0,0,0,10" Padding="5" />
+                    <TextBlock Text="Email address:" FontWeight="Bold" />
+                    <TextBox Text="{Binding User.Email, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                    <TextBlock Text="{Binding FieldErrors[Email]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
-                    <TextBlock Text="Mobile" FontWeight="Bold" />
-                    <TextBox Text="{Binding User.Mobile}" Margin="0,0,0,10" Padding="5" />
+
+
+                    <TextBlock Text="Mobile Number:" FontWeight="Bold" />
+                    <TextBox Text="{Binding User.Mobile, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                    <TextBlock Text="{Binding FieldErrors[Mobile]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
                     <TextBlock Text="Address" FontWeight="Bold" />
                     <TextBox Text="{Binding User.Address}" Margin="0,0,0,10" Padding="5" />
@@ -52,26 +58,12 @@
 
                 <!-- Action Buttons Section -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-                    <!-- Save Button -->
-                    <Button Content="Save"
-                            Command="{Binding SaveCommand}"
-                            Width="100"
-                            Background="#4CAF50"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            Margin="0,0,10,0"
-                            Padding="5" />
+                    
+                <!--Save btn-->
+                <Button Style="{StaticResource SaveButton}" Command="{Binding SaveCommand}" />
 
-                    <!-- Cancel Button -->
-                    <Button Content="Cancel"
-                            Command="{Binding CancelCommand}"
-                            Width="100"
-                            Background="#F44336"
-                            Foreground="White"
-                            FontWeight="Bold"
-                            BorderThickness="0"
-                            Padding="5" />
+                <!-- Cancel btn -->
+                <Button Style="{StaticResource CancelButton}" Command="{Binding CancelCommand}" Margin="10,0,0,0" />
                 </StackPanel>
             </Grid>
         </Border>

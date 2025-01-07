@@ -21,9 +21,10 @@ public partial class App : Application
             {
 
                 services.AddSingleton<IFileService>(new FileService(AppDomain.CurrentDomain.BaseDirectory, "applicationUserList.json"));
-
+                
                 services.AddSingleton<IUserRepository, UserRepository>();
                 services.AddTransient<IUserService, UserService>();
+                services.AddTransient<IValidationService, Business_Library.Services.ValidationService>();
 
                 services.AddTransient<UserListViewModel>();
                 services.AddTransient<UserAddViewModel>();
@@ -47,7 +48,7 @@ public partial class App : Application
         mainViewModel.CurrentViewModel = _host.Services.GetRequiredService<UserListViewModel>();
 
         var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-        mainWindow.DataContext = mainViewModel; // Ensure MainViewModel is the DataContext for MainWindow
+        mainWindow.DataContext = mainViewModel; 
         mainWindow.Show();
     }
 
