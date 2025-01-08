@@ -14,14 +14,15 @@ public partial class UserListViewModel : ObservableObject
     private readonly IServiceProvider _serviceProvider;
 
     [ObservableProperty]
-    private ObservableCollection<UserBase> _users = [];
+    private ObservableCollection<UserBase> _users = new ObservableCollection<UserBase>();
 
     public UserListViewModel(IUserService userService, IServiceProvider serviceProvider)
     {
         _userService = userService;
         _serviceProvider = serviceProvider;
 
-        _users = new ObservableCollection<UserBase>(_userService.GetAllUsers());
+        // Handle potential null from GetAllUsers
+        _users = new ObservableCollection<UserBase>(_userService.GetAllUsers() ?? Enumerable.Empty<UserBase>());
     }
 
     [RelayCommand]
@@ -68,7 +69,7 @@ public partial class UserListViewModel : ObservableObject
             Console.WriteLine($"Error while deleting user: {ex.Message}");
         }
 
-        RefreshUsers(); // Refresh the list after deletion
+        RefreshUsers(); 
     }
 
 

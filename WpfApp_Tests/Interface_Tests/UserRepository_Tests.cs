@@ -16,6 +16,8 @@ namespace WpfApp_Tests.Interface_Tests;
 
 public class UserRepository_Tests
 {
+    // Denna kod genererades med hjälp av ChatGPT
+
     [Fact]
     public void AddUser_ShouldCallAddUser_WhenUserIsValid()
     {
@@ -59,28 +61,30 @@ public class UserRepository_Tests
 
 
     [Fact]
-    public void DeleteItemCommand_ShouldRemoveUserAndRefreshList()
+    public void DeleteItemCommand_ShouldRemoveUserFromUsersCollection()
     {
         // Arrange
         var mockUserService = new Mock<IUserService>();
-        var mockServiceProvider = new Mock<IServiceProvider>();
-        var viewModel = new UserListViewModel(mockUserService.Object, mockServiceProvider.Object);
-
-        // Ensure Users collection is initialized
-        viewModel.Users = new ObservableCollection<UserBase>();
-
         var user = new UserBase { Id = "123", Name = "John" };
-        viewModel.Users.Add(user);
 
-        mockUserService.Setup(us => us.RemoveUser(user.Id)).Verifiable();
+        // Simulate an in-memory list for the mock
+        var users = new List<UserBase> { user };
+        mockUserService.Setup(us => us.GetAllUsers()).Returns(() => users);
+        mockUserService.Setup(us => us.RemoveUser(It.IsAny<string>()))
+                       .Callback<string>(id => users.RemoveAll(u => u.Id == id));
+
+        var viewModel = new UserListViewModel(mockUserService.Object, null!);
+        viewModel.RefreshUsers(); // Ensure the Users collection is initialized
 
         // Act
         viewModel.DeleteItemCommand.Execute(user);
 
         // Assert
-        mockUserService.Verify(us => us.RemoveUser(user.Id), Times.Once);
-        Assert.DoesNotContain(user, viewModel.Users);
+        Assert.Empty(viewModel.Users); // Ensure user was removed
+        mockUserService.Verify(us => us.RemoveUser("123"), Times.Once);
     }
+
+
 
 
 

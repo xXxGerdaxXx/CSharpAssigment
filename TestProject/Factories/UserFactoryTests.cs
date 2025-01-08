@@ -6,6 +6,8 @@ namespace Business_Library.Tests.Factories
 {
     public class UserFactory_Tests
     {
+
+        // Denna kod genererades med hjälp av ChatGPT
         [Fact]
         public void CreateUser_ShouldReturnValidUserBase()
         {

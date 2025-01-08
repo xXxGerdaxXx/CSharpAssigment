@@ -13,11 +13,14 @@ namespace Business_Library.Services;
 public class UserService : IUserService
 {
     private readonly List<UserBase> _users;
+    private readonly IFileService _fileService;
     private readonly string FilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "applicationUserList.json");
 
-    public UserService()
+    public UserService(IFileService fileService)
     {
-        _users = LoadUsersFromJson() ?? new List<UserBase>();
+        _fileService = fileService;
+        _users = _fileService.ReadFromFile<UserBase>()?.ToList() ?? new List<UserBase>();
+
     }
 
     // Retrieve a user by ID
@@ -29,26 +32,24 @@ public class UserService : IUserService
         return user;
     }
 
-    // Retrieve all users
+    
     public List<UserBase> GetAllUsers() => _users;
 
-    // Add a new user
     public bool AddUser(UserBase user)
     {
         try
         {
-            user.Id = Guid.NewGuid().ToString(); // Generate a unique ID
-            _users.Add(user); // Add the user to the collection
-            SaveUsersToJson(); // Persist the changes
-            return true; // Indicate success
+            user.Id = Guid.NewGuid().ToString(); 
+            _users.Add(user); 
+            SaveUsersToJson(); 
+            return _fileService.WriteToFile(_users);
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error adding user: {ex.Message}");
-            return false; // Indicate failure
+            return false; 
         }
     }
-
 
     // Remove a user by ID
     public void RemoveUser(string id)
@@ -61,7 +62,7 @@ public class UserService : IUserService
         }
 
         _users.Remove(user);
-        SaveUsersToJson();
+        _fileService.WriteToFile(_users);
         Console.WriteLine($"User with ID {id} has been removed.");
     }
 
@@ -84,8 +85,7 @@ public class UserService : IUserService
         user.PostNumber = updatedUser.PostNumber;
         user.City = updatedUser.City;
 
-        SaveUsersToJson();
-        return true;
+        return _fileService.WriteToFile(_users);
     }
 
     // Save users to JSON file

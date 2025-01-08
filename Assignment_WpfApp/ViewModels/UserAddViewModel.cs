@@ -22,15 +22,18 @@ public partial class UserAddViewModel : ObservableObject
         _validationService = validationService;
         FieldErrors = new Dictionary<string, string>();
     }
-    
-    [ObservableProperty]
-    private UserBase _user = new UserBase();
 
-    
     [ObservableProperty]
-    private Dictionary<string, string> _fieldErrors;
+    private UserBase _user = new();
 
-    
+    [ObservableProperty]
+    private Dictionary<string, string> _fieldErrors = new();
+
+    public string GetFieldError(string key)
+    {
+        return FieldErrors.ContainsKey(key) ? FieldErrors[key] : string.Empty;
+    }
+
     [RelayCommand]
     private void Cancel()
     {
@@ -43,22 +46,27 @@ public partial class UserAddViewModel : ObservableObject
     {
         FieldErrors.Clear();
 
+        // Validate the user object
         var errors = _validationService.ValidateUser(User);
 
         if (errors.Count > 0)
         {
+            // Populate FieldErrors with validation results
             foreach (var error in errors)
             {
                 FieldErrors[error.Key] = error.Value;
             }
 
-            OnPropertyChanged(nameof(FieldErrors)); 
+            // Notify bindings of FieldErrors update
+            OnPropertyChanged(nameof(FieldErrors));
             return;
         }
 
+        // Attempt to save the user
         var result = _userService.AddUser(User);
         if (result)
         {
+            // Refresh the user list and navigate back
             var userListViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
             userListViewModel.RefreshUsers();
 
@@ -70,4 +78,5 @@ public partial class UserAddViewModel : ObservableObject
             MessageBox.Show("Failed to save the user. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
 }

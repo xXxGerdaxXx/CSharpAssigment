@@ -4,6 +4,7 @@ using Business_Library.Models;
 using Business_Library.Services;
 using System.Collections.Generic;
 using System.IO;
+using static Business_Library.Repositories.UserRepository;
 
 namespace TestProject.Repositories;
 
@@ -106,7 +107,7 @@ public class UserRepositoryTests
     }
 
     [Fact]
-    public void GetUserById_WhenUserDoesNotExist_ShouldThrowException()
+    public void GetUserById_WhenUserDoesNotExist_ShouldThrowUserNotFoundException()
     {
         try
         {
@@ -114,14 +115,15 @@ public class UserRepositoryTests
             var userRepository = CreateUserRepository();
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => userRepository.GetUserById("non-existent-id"));
-            Assert.Equal("User not found.", exception.Message); // Ensure exception message matches
+            var exception = Assert.Throws<UserNotFoundException>(() => userRepository.GetUserById("non-existent-id"));
+            Assert.Equal("User with ID 'non-existent-id' not found.", exception.Message); // Ensure exception message matches
         }
         finally
         {
             Cleanup();
         }
     }
+
 
     [Fact]
     public void AddDuplicateUser_ShouldNotAllowDuplicates()
@@ -162,8 +164,8 @@ public class UserRepositoryTests
             Directory.CreateDirectory(DirectoryPath);
             var users = new List<UserBase>
             {
-                new UserBase { Id = "123", Name = "John", Surname = "Doe", Email = "john.doe@example.com" },
-                new UserBase { Id = "456", Name = "Jane", Surname = "Smith", Email = "jane.smith@example.com" }
+                new () { Id = "123", Name = "John", Surname = "Doe", Email = "john.doe@example.com" },
+                new () { Id = "456", Name = "Jane", Surname = "Smith", Email = "jane.smith@example.com" }
             };
 
             // Serialize the users to JSON and write to the test file

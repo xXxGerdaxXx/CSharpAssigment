@@ -9,7 +9,7 @@
              d:DataContext="{d:DesignInstance Type=viewmodels:UserAddViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="700" d:DesignWidth="400">
-    <!-- Border for Rounded Corners -->
+
     <Border Padding="20" Margin="20" Background="White" >
         <Grid Margin="0">
             <Grid.RowDefinitions>
@@ -23,21 +23,25 @@
 
             <!-- Input Fields Section -->
             <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                <!-- First Name -->
                 <TextBlock Text="First Name:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Name], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
+                <TextBox Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
+                <TextBlock Text="{Binding FieldErrors[Name], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
+                <!-- Last Name -->
                 <TextBlock Text="Last Name:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Surname, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Surname], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
+                <TextBox Text="{Binding User.Surname, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
+                <TextBlock Text="{Binding FieldErrors[Surname], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
+                <!-- Email -->
                 <TextBlock Text="Email address:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Email, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Email], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
+                <TextBox Text="{Binding User.Email, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
+                <TextBlock Text="{Binding FieldErrors[Email], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
+                <!-- Mobile -->
                 <TextBlock Text="Mobile number:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Mobile, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Mobile], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
+                <TextBox Text="{Binding User.Mobile, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
+                <TextBlock Text="{Binding FieldErrors[Mobile], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
                 <TextBlock Text="Address" FontWeight="Bold" />
                 <TextBox Text="{Binding User.Address}" Margin="0,0,0,10" Padding="4" />

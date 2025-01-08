@@ -35,11 +35,17 @@ public class UserRepository : IUserRepository
         return _users;
     }
 
-    // Retrieve a user by ID
+    public class UserNotFoundException(string id) : Exception($"User with ID '{id}' not found.")
+    {
+    }
+
     public UserBase GetUserById(string id)
     {
-        var user = _users.Find(u => u.Id == id);
-        return user == null ? throw new Exception("User not found.") : user;
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException("ID cannot be null or empty.", nameof(id));
+
+        var user = _users.FirstOrDefault(u => u.Id == id);
+        return user ?? throw new UserNotFoundException(id);
     }
 
     private bool SaveUsersToJson()
