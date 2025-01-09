@@ -16,77 +16,82 @@ namespace WpfApp_Tests.Interface_Tests;
 
 public class UserRepository_Tests
 {
-    // Denna kod genererades med hjälp av ChatGPT
+    /// I used ChatGPT4o to generate these tests
 
+    /// <summary>
+    /// Verifies that the `AddUser` method of `UserRepository` correctly adds a valid user
+    /// to the repository and that the user appears in the list of all users.
+    /// </summary>
     [Fact]
     public void AddUser_ShouldCallAddUser_WhenUserIsValid()
     {
         // Arrange
-        var mockFileService = new Mock<IFileService>();
+        var mockFileService = new Mock<IFileService>(); // Mocked FileService
         var repository = new UserRepository(mockFileService.Object, "path/to/file.json");
-
         var user = new UserBase { Id = "123", Name = "John", Email = "john.doe@example.com" };
 
-        // Mock FileService behavior for saving
-        mockFileService.Setup(fs => fs.WriteToFile(It.IsAny<List<UserBase>>())).Returns(true);
+        mockFileService.Setup(fs => fs.WriteToFile(It.IsAny<List<UserBase>>())).Returns(true); // Simulate successful file save
 
         // Act
-        var result = repository.AddUser(user);
+        var result = repository.AddUser(user); // Add the user
 
         // Assert
-        Assert.True(result);
-        var allUsers = repository.GetAllUsers();
-        Assert.Contains(user, allUsers); // Ensure the user was added
+        Assert.True(result); // Ensure AddUser returns true
+        var allUsers = repository.GetAllUsers(); // Get all users
+        Assert.Contains(user, allUsers); // Verify the user is in the list
     }
 
+
+    /// <summary>
+    /// Ensures that the `AddUser` method of `UserRepository` calls the `WriteToFile` method
+    /// of the `IFileService` to persist the user data.
+    /// </summary>
     [Fact]
     public void AddUser_ShouldCallWriteToFile_WhenUserIsAdded()
     {
         // Arrange
-        var mockFileService = new Mock<IFileService>();
+        var mockFileService = new Mock<IFileService>(); // Mocked FileService
         var repository = new UserRepository(mockFileService.Object, "path/to/file.json");
-
         var user = new UserBase { Id = "123", Name = "John", Email = "john.doe@example.com" };
 
-        mockFileService.Setup(fs => fs.WriteToFile(It.IsAny<List<UserBase>>())).Returns(true);
+        mockFileService.Setup(fs => fs.WriteToFile(It.IsAny<List<UserBase>>())).Returns(true); // Simulate successful file save
 
         // Act
-        var result = repository.AddUser(user);
+        var result = repository.AddUser(user); // Add the user
 
         // Assert
-        Assert.True(result);
-        mockFileService.Verify(fs => fs.WriteToFile(It.IsAny<List<UserBase>>()), Times.Once);
+        Assert.True(result); // Ensure AddUser returns true
+        mockFileService.Verify(fs => fs.WriteToFile(It.IsAny<List<UserBase>>()), Times.Once); // Verify WriteToFile was called exactly once
     }
 
 
 
+
+    /// <summary>
+    /// Verifies that the `DeleteItemCommand` in the `UserListViewModel` removes a user
+    /// from the `Users` collection and calls the `RemoveUser` method in `IUserService`.
+    /// </summary>
     [Fact]
     public void DeleteItemCommand_ShouldRemoveUserFromUsersCollection()
     {
         // Arrange
-        var mockUserService = new Mock<IUserService>();
+        var mockUserService = new Mock<IUserService>(); // Mocked UserService
         var user = new UserBase { Id = "123", Name = "John" };
 
-        // Simulate an in-memory list for the mock
-        var users = new List<UserBase> { user };
-        mockUserService.Setup(us => us.GetAllUsers()).Returns(() => users);
+        var users = new List<UserBase> { user }; // Simulate an in-memory list of users
+        mockUserService.Setup(us => us.GetAllUsers()).Returns(() => users); // Mock user retrieval
         mockUserService.Setup(us => us.RemoveUser(It.IsAny<string>()))
-                       .Callback<string>(id => users.RemoveAll(u => u.Id == id));
+                       .Callback<string>(id => users.RemoveAll(u => u.Id == id)); // Simulate user removal
 
-        var viewModel = new UserListViewModel(mockUserService.Object, null!);
-        viewModel.RefreshUsers(); // Ensure the Users collection is initialized
+        var viewModel = new UserListViewModel(mockUserService.Object, null!); // Initialize the ViewModel
+        viewModel.RefreshUsers(); // Ensure the Users collection is populated
 
         // Act
-        viewModel.DeleteItemCommand.Execute(user);
+        viewModel.DeleteItemCommand.Execute(user); // Execute delete command
 
         // Assert
-        Assert.Empty(viewModel.Users); // Ensure user was removed
-        mockUserService.Verify(us => us.RemoveUser("123"), Times.Once);
+        Assert.Empty(viewModel.Users); // Verify the user is removed from the Users collection
+        mockUserService.Verify(us => us.RemoveUser("123"), Times.Once); // Verify RemoveUser was called exactly once
     }
-
-
-
-
-
 
 }

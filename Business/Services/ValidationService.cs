@@ -6,6 +6,11 @@ using Business_Library.Models;
 
 namespace Business_Library.Services;
 
+
+/// <summary>
+/// This part of the code I used ChatGPT4o to generate validation for me
+/// Validates required fields and checks the format of email and mobile numbers
+/// </summary>
 public class ValidationService : IValidationService
 {
     public Dictionary<string, string> ValidateUser(UserBase user)
@@ -43,7 +48,7 @@ public class ValidationService : IValidationService
 
 
 
-    private bool IsValidEmail(string email)
+    private static bool IsValidEmail(string email)
     {
         var emailRegex = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
         var isValid = Regex.IsMatch(email, emailRegex);

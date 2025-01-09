@@ -50,6 +50,46 @@ public class FileServiceTests
                 Directory.Delete(directoryPath, true);
         }
     }
+    [Fact]
+    public void FileExists_ShouldReturnTrueWhenFileExists()
+    {
+        // Arrange
+        var directoryPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        var fileName = "test.json";
+        var filePath = Path.Combine(directoryPath, fileName);
+
+        Directory.CreateDirectory(directoryPath);
+        File.WriteAllText(filePath, "Test content"); // Create the file
+
+        var fileService = new FileService(directoryPath, fileName);
+
+        // Act
+        var result = fileService.FileExists();
+
+        // Assert
+        Assert.True(result);
+
+        // Cleanup
+        Directory.Delete(directoryPath, true);
+    }
+
+    [Fact]
+    public void FileExists_ShouldReturnFalseWhenFileDoesNotExist()
+    {
+        // Arrange
+        var directoryPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString());
+        var fileName = "test.json";
+
+        var fileService = new FileService(directoryPath, fileName);
+
+        // Act
+        var result = fileService.FileExists();
+
+        // Assert
+        Assert.False(result);
+    }
+ 
+
 
 
 }

@@ -22,10 +22,12 @@ namespace Assignment.Dialogs
             {
                 Console.Clear(); // Clear the screen before showing the menu
                 Console.WriteLine("\nUser Management System");
+                Console.WriteLine("********************************");
                 Console.WriteLine("1. Add User");
                 Console.WriteLine("2. List All Users");
                 Console.WriteLine("3. Search User by ID");
                 Console.WriteLine("4. Exit");
+                Console.WriteLine("********************************");
                 Console.Write("Choose an option: ");
 
                 var input = Console.ReadLine();

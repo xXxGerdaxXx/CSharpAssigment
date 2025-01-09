@@ -7,10 +7,20 @@ using System.Text.Json;
 
 namespace Business_Library.Services;
 
+/// <summary>
+/// Provides file handling services for reading, writing, checking the existence of files.
+/// Supports generic data serialization and deserialization using JSON format.
+/// </summary>
+
 public class FileService : IFileService
 {
     private readonly string _directoryPath;
     private readonly string _filePath;
+
+    private static readonly JsonSerializerOptions _jsonOptions = new ()
+    {
+        WriteIndented = true
+    };
 
     public FileService(string directoryPath, string fileName)
     {
@@ -27,8 +37,7 @@ public class FileService : IFileService
     {
         try
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            var json = JsonSerializer.Serialize(data, options);
+            var json = JsonSerializer.Serialize(data, _jsonOptions);
             File.WriteAllText(_filePath, json);
             return true;
         }
@@ -44,22 +53,23 @@ public class FileService : IFileService
         try
         {
             if (!File.Exists(_filePath))
-                return new List<T>();
+                return [];
 
             var json = File.ReadAllText(_filePath);
 
+            // Check if the file stores a single object or a collection of objects
             if (json.Trim().StartsWith("{"))
             {
-                var singleObject = JsonSerializer.Deserialize<T>(json);
-                return singleObject != null ? new List<T> { singleObject } : new List<T>();
+                var singleObject = JsonSerializer.Deserialize<T>(json, _jsonOptions);
+                return singleObject != null ? new List<T> { singleObject } : [];
             }
 
-            return JsonSerializer.Deserialize<IEnumerable<T>>(json) ?? new List<T>();
+            return JsonSerializer.Deserialize<IEnumerable<T>>(json, _jsonOptions) ?? [];
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error reading from file: {ex.Message}");
-            return new List<T>();
+            return [];
         }
     }
 

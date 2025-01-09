@@ -5,6 +5,8 @@ using Business_Library.Services;
 using Business_Library.Interfaces;
 using System.Collections.Generic;
 
+namespace TestProject.Services;
+
 public class UserServiceTests
 {
     [Fact]
@@ -14,7 +16,7 @@ public class UserServiceTests
         var mockFileService = new Mock<IFileService>();
 
         // Simulate an empty user list initially
-        mockFileService.Setup(fs => fs.ReadFromFile<UserBase>()).Returns(new List<UserBase>());
+        mockFileService.Setup(fs => fs.ReadFromFile<UserBase>()).Returns([]);
         // Simulate successful file writing
         mockFileService.Setup(fs => fs.WriteToFile(It.IsAny<List<UserBase>>())).Returns(true);
 
@@ -80,7 +82,7 @@ public class UserServiceTests
         var mockFileService = new Mock<IFileService>();
 
         // Simulate an empty user list
-        mockFileService.Setup(fs => fs.ReadFromFile<UserBase>()).Returns(new List<UserBase>());
+        mockFileService.Setup(fs => fs.ReadFromFile<UserBase>()).Returns([]);
 
         var userService = new UserService(mockFileService.Object);
 

@@ -26,22 +26,22 @@
                 <!-- First Name -->
                 <TextBlock Text="First Name:" FontWeight="Bold" />
                 <TextBox Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Name], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBlock Text="{Binding FieldErrors[Name], TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
                 <!-- Last Name -->
                 <TextBlock Text="Last Name:" FontWeight="Bold" />
                 <TextBox Text="{Binding User.Surname, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Surname], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBlock Text="{Binding FieldErrors[Surname], TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
                 <!-- Email -->
                 <TextBlock Text="Email address:" FontWeight="Bold" />
                 <TextBox Text="{Binding User.Email, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Email], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBlock Text="{Binding FieldErrors[Email], TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
                 <!-- Mobile -->
                 <TextBlock Text="Mobile number:" FontWeight="Bold" />
                 <TextBox Text="{Binding User.Mobile, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Mobile], FallbackValue='', TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBlock Text="{Binding FieldErrors[Mobile], TargetNullValue=''}" Foreground="Red" FontSize="12" />
 
                 <TextBlock Text="Address" FontWeight="Bold" />
                 <TextBox Text="{Binding User.Address}" Margin="0,0,0,10" Padding="4" />

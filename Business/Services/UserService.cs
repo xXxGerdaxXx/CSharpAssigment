@@ -10,6 +10,12 @@ using System.Text.Json;
 
 namespace Business_Library.Services;
 
+/// <summary>
+/// Manages a collection of users allowing for adding new users, 
+/// retrieving user details, updating user informatio and deleting users.
+/// User data is stored in a JSON file using file service.
+/// </summary>
+
 public class UserService : IUserService
 {
     private readonly List<UserBase> _users;
@@ -19,7 +25,7 @@ public class UserService : IUserService
     public UserService(IFileService fileService)
     {
         _fileService = fileService;
-        _users = _fileService.ReadFromFile<UserBase>()?.ToList() ?? new List<UserBase>();
+        _users = _fileService.ReadFromFile<UserBase>()?.ToList() ?? [];
 
     }
 
@@ -27,12 +33,10 @@ public class UserService : IUserService
     public UserBase GetUserById(string id)
     {
         var user = _users.Find(u => u.Id == id);
-        if (user == null)
-            throw new Exception("User not found.");
-        return user;
+        return user ?? throw new Exception("User not found.");
     }
 
-    
+
     public List<UserBase> GetAllUsers() => _users;
 
     public bool AddUser(UserBase user)
@@ -103,21 +107,5 @@ public class UserService : IUserService
         }
     }
 
-    // Load users from JSON file
-    private List<UserBase>? LoadUsersFromJson()
-    {
-        try
-        {
-            if (!File.Exists(FilePath))
-                return null;
 
-            var json = File.ReadAllText(FilePath);
-            return JsonSerializer.Deserialize<List<UserBase>>(json);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error loading users from file: {ex.Message}");
-            return null;
-        }
-    }
 }

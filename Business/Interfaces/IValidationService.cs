@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Business_Library.Interfaces;
 
+
+/// <summary>
+/// Defines the contract for validating user input so that required fields are not left empty
 public interface IValidationService
 {
     Dictionary<string, string> ValidateUser(UserBase user);
@@ -29,7 +32,6 @@ public class ValidationService : IValidationService
 
         if (string.IsNullOrWhiteSpace(user.Mobile))
             errors[nameof(user.Mobile)] = "Mobile is required.";
-
 
         return errors;
     }

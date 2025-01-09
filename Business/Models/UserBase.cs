@@ -1,6 +1,10 @@
 ﻿
 namespace Business_Library.Models;
 
+
+/// <summary>
+/// Describes user entity with basic contact information
+/// </summary>
 public class UserBase
 {
     public string Id { get; set; } = Guid.NewGuid().ToString();

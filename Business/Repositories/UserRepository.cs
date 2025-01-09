@@ -5,6 +5,10 @@ using System.Diagnostics;
 
 namespace Business_Library.Repositories;
 
+/// <summary>
+/// A repository for managing user data using a file-based storage mechanism
+/// </summary>
+
 public class UserRepository : IUserRepository
 {
     private readonly IFileService _fileService;

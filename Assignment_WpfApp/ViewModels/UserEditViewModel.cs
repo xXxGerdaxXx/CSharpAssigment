@@ -15,7 +15,7 @@ public partial class UserEditViewModel : ObservableObject
 
 
     [ObservableProperty]
-    private UserBase _user = new UserBase
+    private UserBase _user = new()
     {
         Name = string.Empty,
         Surname = string.Empty,
@@ -34,7 +34,13 @@ public partial class UserEditViewModel : ObservableObject
         _serviceProvider = serviceProvider;
         _userService = userService;
         _validationService = validationService;
-        FieldErrors = new Dictionary<string, string>();
+        FieldErrors = new Dictionary<string, string>
+        {
+            { "Name", "" },
+            { "Surname", "" },
+            { "Email", "" },
+            { "Mobile", "" }
+        };
     }
 
     [RelayCommand]

@@ -20,7 +20,13 @@ public partial class UserAddViewModel : ObservableObject
         _userService = userService;
         _serviceProvider = serviceProvider;
         _validationService = validationService;
-        FieldErrors = new Dictionary<string, string>();
+        FieldErrors = new Dictionary<string, string>
+        {
+            { "Name", "" },
+            { "Surname", "" },
+            { "Email", "" },
+            { "Mobile", "" }
+        };
     }
 
     [ObservableProperty]
