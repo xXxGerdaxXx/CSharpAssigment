@@ -24,7 +24,8 @@ public partial class App : Application
                 
                 services.AddSingleton<IUserRepository, UserRepository>();
                 services.AddTransient<IUserService, UserService>();
-                services.AddTransient<IValidationService, Business_Library.Services.ValidationService>();
+                services.AddSingleton<IValidationService, ValidationService>();
+
 
                 services.AddTransient<UserListViewModel>();
                 services.AddTransient<UserAddViewModel>();

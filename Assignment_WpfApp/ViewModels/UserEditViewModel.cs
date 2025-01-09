@@ -27,7 +27,7 @@ public partial class UserEditViewModel : ObservableObject
     };
 
     [ObservableProperty]
-    private Dictionary<string, string> _fieldErrors = new();
+    private Dictionary<string, string> _fieldErrors = [];
 
     public UserEditViewModel(IServiceProvider serviceProvider, IUserService userService, IValidationService validationService)
     {

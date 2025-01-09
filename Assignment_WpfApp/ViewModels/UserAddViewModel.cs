@@ -33,7 +33,24 @@ public partial class UserAddViewModel : ObservableObject
     private UserBase _user = new();
 
     [ObservableProperty]
-    private Dictionary<string, string> _fieldErrors = new();
+    private Dictionary<string, string> _fieldErrors = [];
+    public void Validate()
+    {
+        // Clear existing field errors
+        FieldErrors.Clear();
+
+        // Get validation errors from ValidationService
+        var errors = _validationService.ValidateUser(User);
+
+        // Populate FieldErrors
+        foreach (var error in errors)
+        {
+            FieldErrors[error.Key] = error.Value;
+        }
+
+        // Notify the view that FieldErrors has been updated
+        OnPropertyChanged(nameof(FieldErrors));
+    }
 
     public string GetFieldError(string key)
     {

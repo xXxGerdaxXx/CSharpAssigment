@@ -1,38 +1,18 @@
 ﻿using Business_Library.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Business_Library.Interfaces;
-
-
-/// <summary>
-/// Defines the contract for validating user input so that required fields are not left empty
-public interface IValidationService
+namespace Business_Library.Interfaces
 {
-    Dictionary<string, string> ValidateUser(UserBase user);
-}
-
-public class ValidationService : IValidationService
-{
-    public Dictionary<string, string> ValidateUser(UserBase user)
+    /// <summary>
+    /// Defines the contract for validating user input so that required fields are not left empty.
+    /// </summary>
+    public interface IValidationService
     {
-        var errors = new Dictionary<string, string>();
-
-        if (string.IsNullOrWhiteSpace(user.Name))
-            errors[nameof(user.Name)] = "Name is required.";
-
-        if (string.IsNullOrWhiteSpace(user.Surname))
-            errors[nameof(user.Surname)] = "Surname is required.";
-
-        if (string.IsNullOrWhiteSpace(user.Email))
-            errors[nameof(user.Email)] = "Email is required.";
-
-        if (string.IsNullOrWhiteSpace(user.Mobile))
-            errors[nameof(user.Mobile)] = "Mobile is required.";
-
-        return errors;
+        /// <summary>
+        /// Validates the given user and returns a dictionary of validation errors.
+        /// </summary>
+        /// <param name="user">The user to validate.</param>
+        /// <returns>A dictionary where the key is the field name and the value is the error message.</returns>
+        Dictionary<string, string> ValidateUser(UserBase user);
     }
 }
