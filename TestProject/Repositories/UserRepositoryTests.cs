@@ -4,42 +4,19 @@ using Business_Library.Models;
 using Business_Library.Services;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
+using Business_Library.Helpers;
 using static Business_Library.Repositories.UserRepository;
 
 namespace TestProject.Repositories;
 
 public class UserRepositoryTests
 {
-    // Constants for the test data directory and file name
-    private const string DirectoryPath = "TestData";
-    private const string FileName = "testUsers.json";
-
-    // Full file path for the test data
-    private string FilePath => Path.Combine(DirectoryPath, FileName);
-
-    // Helper method to create a UserRepository instance with a FileService
-    private UserRepository CreateUserRepository()
+    // Static instance of JsonSerializerOptions for reuse
+    private static readonly JsonSerializerOptions JsonOptions = new ()
     {
-        var fileService = new FileService(DirectoryPath, FileName);
-        return new UserRepository(fileService, FilePath);
-    }
-
-    // Cleanup method to ensure test artifacts are removed
-    private void Cleanup()
-    {
-        try
-        {
-            if (File.Exists(FilePath))
-                File.Delete(FilePath);
-
-            if (Directory.Exists(DirectoryPath))
-                Directory.Delete(DirectoryPath, true); // Force delete directory
-        }
-        catch
-        {
-            // Ignore cleanup errors
-        }
-    }
+        WriteIndented = true
+    };
 
     [Fact]
     public void AddUser_ShouldAddUserAndSaveToFile()
@@ -47,7 +24,7 @@ public class UserRepositoryTests
         try
         {
             // Arrange
-            var userRepository = CreateUserRepository();
+            var userRepository = TestHelpers.CreateUserRepository();
             var user = new UserBase
             {
                 Id = "123",
@@ -70,7 +47,7 @@ public class UserRepositoryTests
         }
         finally
         {
-            Cleanup(); // Cleanup test artifacts
+            TestHelpers.Cleanup(); // Cleanup test artifacts
         }
     }
 
@@ -80,7 +57,7 @@ public class UserRepositoryTests
         try
         {
             // Arrange
-            var userRepository = CreateUserRepository();
+            var userRepository = TestHelpers.CreateUserRepository();
             var user = new UserBase
             {
                 Id = "123",
@@ -102,7 +79,7 @@ public class UserRepositoryTests
         }
         finally
         {
-            Cleanup();
+            TestHelpers.Cleanup();
         }
     }
 
@@ -112,7 +89,7 @@ public class UserRepositoryTests
         try
         {
             // Arrange
-            var userRepository = CreateUserRepository();
+            var userRepository = TestHelpers.CreateUserRepository();
 
             // Act & Assert
             var exception = Assert.Throws<UserNotFoundException>(() => userRepository.GetUserById("non-existent-id"));
@@ -120,10 +97,9 @@ public class UserRepositoryTests
         }
         finally
         {
-            Cleanup();
+            TestHelpers.Cleanup();
         }
     }
-
 
     [Fact]
     public void AddDuplicateUser_ShouldNotAllowDuplicates()
@@ -131,7 +107,7 @@ public class UserRepositoryTests
         try
         {
             // Arrange
-            var userRepository = CreateUserRepository();
+            var userRepository = TestHelpers.CreateUserRepository();
             var user = new UserBase
             {
                 Id = "123",
@@ -151,7 +127,7 @@ public class UserRepositoryTests
         }
         finally
         {
-            Cleanup();
+            TestHelpers.Cleanup();
         }
     }
 
@@ -161,35 +137,37 @@ public class UserRepositoryTests
         try
         {
             // Arrange
-            Directory.CreateDirectory(DirectoryPath);
+            TestHelpers.Cleanup(); // Ensure a clean state
+            Directory.CreateDirectory(TestHelpers.DirectoryPath); // Create directory for the test file
+
             var users = new List<UserBase>
             {
-                new () { Id = "123", Name = "John", Surname = "Doe", Email = "john.doe@example.com" },
-                new () { Id = "456", Name = "Jane", Surname = "Smith", Email = "jane.smith@example.com" }
+                new() { Id = "123", Name = "John", Surname = "Doe", Email = "john.doe@example.com" },
+                new() { Id = "456", Name = "Jane", Surname = "Smith", Email = "jane.smith@example.com" }
             };
 
             // Serialize the users to JSON and write to the test file
-            var json = System.Text.Json.JsonSerializer.Serialize(users, new System.Text.Json.JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText(FilePath, json);
+            var json = JsonSerializer.Serialize(users, JsonOptions); // Use static JsonOptions
+            File.WriteAllText(TestHelpers.FilePath, json); // Write serialized JSON to the test file
 
-            var userRepository = CreateUserRepository();
+            var userRepository = TestHelpers.CreateUserRepository();
 
             // Act
             var loadedUsers = userRepository.GetAllUsers();
 
             // Assert
-            Assert.Equal(2, loadedUsers.Count); // Ensure all users are loaded
-            Assert.Equal("John", loadedUsers[0].Name);
-            Assert.Equal("Doe", loadedUsers[0].Surname);
-            Assert.Equal("Jane", loadedUsers[1].Name);
-            Assert.Equal("Smith", loadedUsers[1].Surname);
+            Assert.Equal(users.Count, loadedUsers.Count); // Ensure all users are loaded
+            for (int i = 0; i < users.Count; i++)
+            {
+                Assert.Equal(users[i].Id, loadedUsers[i].Id);
+                Assert.Equal(users[i].Name, loadedUsers[i].Name);
+                Assert.Equal(users[i].Surname, loadedUsers[i].Surname);
+                Assert.Equal(users[i].Email, loadedUsers[i].Email);
+            }
         }
         finally
         {
-            Cleanup();
+            TestHelpers.Cleanup(); // Ensure test artifacts are cleaned up
         }
     }
-
-
-
 }

@@ -23,25 +23,21 @@
 
             <!-- Input Fields Section -->
             <StackPanel Grid.Row="1" Margin="0,10,0,0">
-                <!-- First Name -->
                 <TextBlock Text="First Name:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Name], TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBox Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                <TextBlock Text="{Binding NameError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
-                <!-- Last Name -->
-                <TextBlock Text="Last Name:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Surname, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Surname], TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBlock Text="Surname:" FontWeight="Bold" />
+                <TextBox Text="{Binding User.Surname, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                <TextBlock Text="{Binding SurnameError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
-                <!-- Email -->
                 <TextBlock Text="Email address:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Email, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Email], TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBox Text="{Binding User.Email, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                <TextBlock Text="{Binding EmailError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
-                <!-- Mobile -->
-                <TextBlock Text="Mobile number:" FontWeight="Bold" />
-                <TextBox Text="{Binding User.Mobile, UpdateSourceTrigger=PropertyChanged}" Padding="5" />
-                <TextBlock Text="{Binding FieldErrors[Mobile], TargetNullValue=''}" Foreground="Red" FontSize="12" />
+                <TextBlock Text="Mobile Number:" FontWeight="Bold" />
+                <TextBox Text="{Binding User.Mobile, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
+                <TextBlock Text="{Binding MobileError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
                 <TextBlock Text="Address" FontWeight="Bold" />
                 <TextBox Text="{Binding User.Address}" Margin="0,0,0,10" Padding="4" />

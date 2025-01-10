@@ -56,11 +56,12 @@ public class UserRepository : IUserRepository
     {
         try
         {
+            Debug.WriteLine($"Saving users to file: {_filePath}"); // Use _filePath here for debugging
             return _fileService.WriteToFile(_users); // Pass _users directly
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error saving users to file: {ex.Message}");
+            Debug.WriteLine($"Error saving users to file {_filePath}': {ex.Message}");
             return false;
         }
     }

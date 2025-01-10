@@ -30,21 +30,19 @@
                 <StackPanel Grid.Row="1" Margin="0,0,0,20">
                     <TextBlock Text="First Name:" FontWeight="Bold" />
                     <TextBox Text="{Binding User.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                    <TextBlock Text="{Binding FieldErrors[Name]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding NameError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
                     <TextBlock Text="Surname:" FontWeight="Bold" />
                     <TextBox Text="{Binding User.Surname, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                    <TextBlock Text="{Binding FieldErrors[Surname]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding SurnameError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
                     <TextBlock Text="Email address:" FontWeight="Bold" />
                     <TextBox Text="{Binding User.Email, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                    <TextBlock Text="{Binding FieldErrors[Email]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
-
-
+                    <TextBlock Text="{Binding EmailError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
                     <TextBlock Text="Mobile Number:" FontWeight="Bold" />
                     <TextBox Text="{Binding User.Mobile, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Padding="5" />
-                    <TextBlock Text="{Binding FieldErrors[Mobile]}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
+                    <TextBlock Text="{Binding MobileError}" Foreground="Red" FontSize="12" Margin="0,0,0,5" />
 
                     <TextBlock Text="Address" FontWeight="Bold" />
                     <TextBox Text="{Binding User.Address}" Margin="0,0,0,10" Padding="5" />

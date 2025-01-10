@@ -9,79 +9,66 @@ using System.Windows;
 
 namespace Assignment_WpfApp.ViewModels;
 
-public partial class UserAddViewModel : ObservableObject
+public partial class UserAddViewModel(IUserService userService, IServiceProvider serviceProvider, IValidationService validationService) : ObservableObject
 {
-    private readonly IUserService _userService;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly IValidationService _validationService;
+    private readonly IUserService _userService = userService;
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
+    private readonly IValidationService _validationService = validationService;
 
-    public UserAddViewModel(IUserService userService, IServiceProvider serviceProvider, IValidationService validationService)
-    {
-        _userService = userService;
-        _serviceProvider = serviceProvider;
-        _validationService = validationService;
-        FieldErrors = new Dictionary<string, string>
-        {
-            { "Name", "" },
-            { "Surname", "" },
-            { "Email", "" },
-            { "Mobile", "" }
-        };
-    }
+
 
     [ObservableProperty]
-    private UserBase _user = new();
+    private UserBase _user = new()
+    {
+        Name = string.Empty,
+        Surname = string.Empty,
+        Email = string.Empty,
+        Mobile = string.Empty,
+        Address = string.Empty,
+        PostNumber = string.Empty,
+        City = string.Empty
+    };
+
+
 
     [ObservableProperty]
     private Dictionary<string, string> _fieldErrors = [];
-    public void Validate()
-    {
-        // Clear existing field errors
-        FieldErrors.Clear();
 
-        // Get validation errors from ValidationService
+    // Properties for individual field errors
+    public string NameError => FieldErrors.TryGetValue("Name", out string? value) ? value : string.Empty;
+    public string SurnameError => FieldErrors.TryGetValue("Surname", out string? value) ? value : string.Empty;
+    public string EmailError => FieldErrors.TryGetValue("Email", out string? value) ? value : string.Empty;
+    public string MobileError => FieldErrors.TryGetValue("Mobile", out string? value) ? value : string.Empty;
+
+
+
+    private bool Validate()
+    {
         var errors = _validationService.ValidateUser(User);
 
-        // Populate FieldErrors
+        FieldErrors.Clear();
+
         foreach (var error in errors)
         {
             FieldErrors[error.Key] = error.Value;
         }
 
-        // Notify the view that FieldErrors has been updated
-        OnPropertyChanged(nameof(FieldErrors));
-    }
+        // Notify UI about changes to error properties
+        OnPropertyChanged(nameof(NameError));
+        OnPropertyChanged(nameof(SurnameError));
+        OnPropertyChanged(nameof(EmailError));
+        OnPropertyChanged(nameof(MobileError));
 
-    public string GetFieldError(string key)
-    {
-        return FieldErrors.ContainsKey(key) ? FieldErrors[key] : string.Empty;
-    }
-
-    [RelayCommand]
-    private void Cancel()
-    {
-        var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
-        mainViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
+        return FieldErrors.Count == 0; // Return true if there are no errors
     }
 
     [RelayCommand]
     private void Save()
     {
-        FieldErrors.Clear();
-
-        // Validate the user object
-        var errors = _validationService.ValidateUser(User);
-
-        if (errors.Count > 0)
+        // Validate method to check for errors
+        if (!Validate())
         {
-            // Populate FieldErrors with validation results
-            foreach (var error in errors)
-            {
-                FieldErrors[error.Key] = error.Value;
-            }
-
-            // Notify bindings of FieldErrors update
-            OnPropertyChanged(nameof(FieldErrors));
+            // If validation fails, stop the save process
             return;
         }
 
@@ -98,8 +85,17 @@ public partial class UserAddViewModel : ObservableObject
         }
         else
         {
+            // Show an error message
             MessageBox.Show("Failed to save the user. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
+    [RelayCommand]
+    private void Cancel()
+    {
+        var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
+        mainViewModel.CurrentViewModel = _serviceProvider.GetRequiredService<UserListViewModel>();
+    }
 }
+
+
