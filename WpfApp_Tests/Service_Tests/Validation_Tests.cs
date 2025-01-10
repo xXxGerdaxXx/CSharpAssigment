@@ -1,5 +1,6 @@
 ﻿using Business_Library.Interfaces;
 using Business_Library.Models;
+using Business_Library.Services;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,29 @@ public class Validation_Tests
         Assert.NotEmpty(errors);
         Assert.Equal("Name is required", errors["Name"]);
         Assert.Equal("Invalid email format", errors["Email"]);
+    }
+
+    [Fact]
+    public void ValidateUser_ShouldPass_ForValidUser()
+    {
+        // Arrange
+        var validationService = new ValidationService();
+        var validUser = new UserBase
+        {
+            Name = "John",
+            Surname = "Doe",
+            Email = "john.doe@example.com",
+            Mobile = "+1234567890",
+            Address = "123 Main Street",
+            PostNumber = "12345",
+            City = "New York"
+        };
+
+        // Act
+        Dictionary<string, string> errors = validationService.ValidateUser(validUser);
+
+        // Assert
+        Assert.Empty(errors); // Assert that no errors are returned for a valid user
     }
 
 }
