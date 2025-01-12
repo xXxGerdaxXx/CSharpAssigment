@@ -15,7 +15,7 @@ public class MenuDialog(IUserService userService)
 
         while (running)
         {
-            Console.Clear(); 
+            Console.Clear();
             Console.WriteLine("\nUser Management System");
             Console.WriteLine("********************************");
             Console.WriteLine("1. Add User");
@@ -40,15 +40,15 @@ public class MenuDialog(IUserService userService)
                     break;
                 case "4":
                     Console.Clear();
-                    running = false;
-                    Environment.Exit(0);
+                    Console.WriteLine("Goodbye!");
+                    running = false; 
                     break;
                 default:
                     Console.WriteLine("Invalid option. Please try again.");
                     break;
             }
 
-            if (running) 
+            if (running)
             {
                 Console.WriteLine("\nPress Enter to return to the menu...");
                 Console.ReadLine();

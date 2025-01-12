@@ -6,11 +6,26 @@ using System.Collections.Generic;
 namespace TestProject.Helpers;
 
 /// <summary>
-/// Used chat to generate the test
+/// I used Hans's tips & tricks video & chat to write the tests
 /// Tests for the IdGenerator class to ensure correct behavior of the GenerateShortGuid method.
 /// </summary>
 public class IdGeneratorTests
 {
+    //[Fact]
+    
+    //public void Generate_ShoudlReturnGuidAsString()
+    //{
+    //    // act
+    //    var result = IdGenerator.GenerateShortGuid();
+
+    //    // assert
+    //    Assert.NotEmpty(result);
+    //    Assert.True(Guid.TryParse(result, out _));
+    // If I understand right, this test doesn't work in my case because i shortened my guid to 6 digits 
+    //
+
+
+
     /// <summary>
     /// Verifies that GenerateShortGuid produces a string of the correct length for valid inputs.
     /// </summary>
