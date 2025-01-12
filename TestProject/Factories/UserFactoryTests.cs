@@ -7,13 +7,13 @@ namespace TestProject.Factories;
 public class UserFactory_Tests
 {
 
-    /// I used ChatGPT to generate this code
+    /// I used ChatGPT and tips and tricks video for these tests
     /// <summary>
     /// Tests that <see cref="UserFactory.CreateUser"/> method creates a valid <see cref="UserBase"/> object 
     /// Ensures that the generated user has a unique ID of the correct length.
     /// </summary>
     [Fact]
-    public void CreateUser_ShouldReturnValidUserBase()
+    public void CreateUser_ShouldReturnUserBase()
     {
         // Arrange
         string name = "John";
